@@ -55,6 +55,7 @@ public class NoteBookService {
         nb.setNotebookTypeId(noteBookType.getId());
         noteBookDao.add(nb);
         result.put("success",true);
+        result.put("notebook",nb);
         return result;
     }
     @Transactional

@@ -17,7 +17,13 @@
         <link rel="stylesheet" href="styles/prettify.css"/>
 		<!-- Ueditor编辑器CSS -->
 		<link href="styles/umeditor.min.css" type="text/css" rel="stylesheet">
-    </head>
+		<!--美化弹窗-->
+
+		<script type="text/javascript" src="scripts/common/sweetalert-dev.js"></script>
+		<link rel="stylesheet" type="text/css" href="scripts/common/sweetalert.css">
+
+
+	</head>
     <body class="animated fadeIn">
         <header class="header">
             <div class="header-brand">
@@ -74,12 +80,7 @@
 											<i class="fa fa-book" title="online" rel="tooltip-bottom"></i> 默认笔记本
 										</a>
 									</li>
-									<li class="online">
-										<a class='unchecked'>
-											<i class="fa fa-book" title="笔记本" rel="tooltip-bottom"></i> Spring
-											<button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button>
-										</a>
-									</li>
+
 								</ul>
 							</div>
 						</div>
@@ -303,7 +304,9 @@
 		<script type="text/javascript" src="scripts/cookie.js"></script>
 		<!-- Bootstrap框架JS -->
         <script src="scripts/common/bootstrap.min.js"></script>
-        <script src="scripts/common/js-prototype.js"></script>       
+
+
+        <script src="scripts/common/js-prototype.js"></script>
         <script src="scripts/common/theme-setup.js"></script>
 		<!-- 页面事件处理JS -->
         <script class="re-execute" src="scripts/local.js"></script>
@@ -330,8 +333,7 @@
 			
 			//获取笔记本列表
 			get_nb_list();
-			//获取特殊笔记本列表
-			get_spnb_list();
+
 			//实例化Ueditor编辑器
 			var um = UM.getEditor('myEditor');
 		</script>
