@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试RESTFUL</title>
+    <script type="text/javascript" src="scripts/common/jquery.min.js"></script>
+    <script >
+        function notebookList() {
+            $.ajax({
+                url:"/notebook.do",
+                method:"get"
+            })
+        }
+        function addnotebookList() {
+            $.ajax({
+                url:"/notebook.do",
+                method:"post"
+            })
+        }
+        function updatenotebookList() {
+            $.ajax({
+                url:"/notebook.do",
+                method:"put"
+            })
+        }
+        function deletenotebookList() {
+            $.ajax({
+                url:"/notebook.do",
+                method:"delete"
+            })
+        }
+    </script>
+</head>
+<body>
+<button onclick="notebookList()">获取笔记本</button><br>
+<button onclick="addnotebookList()">添加笔记本</button><br>
+<button onclick="updatenotebookList()">修改笔记本</button><br>
+<button onclick="deletenotebookList()">删除笔记本</button><br>
+
+</body>
+</html>
