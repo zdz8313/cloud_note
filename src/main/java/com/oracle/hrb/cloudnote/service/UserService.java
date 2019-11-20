@@ -15,6 +15,8 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private NoteBookService noteBookService;
 @Transactional(readOnly = true)
     public Map<String,Object> login(String name, String password) {
         Map<String, Object> result =new HashMap<>();
@@ -78,6 +80,7 @@ public class UserService {
         System.out.println(password);
         u.setPassword(password);
         userDao.add(u);
+        noteBookService.initSpacialNotebook(u.getId());
         result.put("success",true);
         return result;
     }
