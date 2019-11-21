@@ -27,7 +27,7 @@ public class NoteBookService {
     public List<NoteBook> findNormal(String userId){
         return  noteBookDao.findByUserNormal(userId);
     }
-    @Transactional
+
      public void deleteNotebook (String id){
         noteBookDao.delete(id);
     }
@@ -52,6 +52,7 @@ public class NoteBookService {
         nb.setId(UUID.randomUUID().toString());
         nb.setCreateTime(new Date());
         NoteBookType noteBookType =noteBookTypeDao.findNormal();
+        System.out.println(noteBookType);
         nb.setNotebookTypeId(noteBookType.getId());
         noteBookDao.add(nb);
         result.put("success",true);

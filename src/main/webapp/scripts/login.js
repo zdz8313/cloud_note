@@ -84,6 +84,7 @@ function register() {
                  alert("注册成功.");
                 $("#zc").attr("class","sig sig_out");
                 $("#dl").attr("class","log log_in");
+                location.href="/login.html";
             }else {
                 if(data['name_null']){
                     $('#regist_username').attr("data_content","用户名不能为空");

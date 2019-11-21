@@ -34,13 +34,17 @@ public class NoteBookController {
         return result;
     }
     @PutMapping
-    public Object  updatenotebookList(){
-        System.out.println("修改笔记本");
-        return null;
+    public Object  updatenotebookList(NoteBook notebook ,HttpSession session){
+        User  user = (User) session.getAttribute("user");
+        notebook.setUserId(user.getId());
+        Map<String ,Object> result =noteBookService.updatenotebook(notebook);
+        return result;
     }
     @DeleteMapping
-    public Object  deletenotebookList(){
-        System.out.println("删除笔记本");
-        return null;
+    public void  deletenotebook(String  id){
+        noteBookService.deleteNotebook(id);
     }
+
+
+
 }

@@ -37,5 +37,17 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
+    <!-- 配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截范围-->
+            <mvc:mapping path="/**"/>
+            <!--例外的路径，不拦截，特例-->
+            <mvc:exclude-mapping path="/user/*"/>
+            <!--拦截器所在的类-->
+            <bean class="com.oracle.hrb.cloudnote.interceptor.loginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
 </beans>
