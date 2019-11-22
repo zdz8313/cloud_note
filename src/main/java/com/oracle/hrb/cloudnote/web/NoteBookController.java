@@ -19,14 +19,23 @@ public class NoteBookController {
 
 @GetMapping
     public Object notebookList(HttpSession session){
-     User  user = (User) session.getAttribute("user");
-     List<NoteBook> special =noteBookService.findSpecial(user.getId());
-     List<NoteBook> normal =noteBookService.findNormal(user.getId());
-     Map<String,Object> result =new HashMap<>();
-     result.put("special",special);
-     result.put("normal",normal);
-     return  result;
+        User  user = (User) session.getAttribute("user");
+        List<NoteBook> special =noteBookService.findSpecial(user.getId());
+        List<NoteBook> normal =noteBookService.findNormal(user.getId());
+        Map<String,Object> result =new HashMap<>();
+        result.put("special",special);
+        result.put("normal",normal);
+        return  result;
     }
+    @GetMapping("/normal")
+    public Object normalNotebookList(HttpSession session){
+        User  user = (User) session.getAttribute("user");
+        List<NoteBook> normal =noteBookService.findNormal(user.getId());
+        return  normal;
+    }
+
+
+
     @PostMapping
     public Object  addnotebookList(String name , HttpSession session){
         User  user = (User) session.getAttribute("user");

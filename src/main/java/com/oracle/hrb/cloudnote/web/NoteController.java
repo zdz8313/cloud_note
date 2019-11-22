@@ -22,7 +22,12 @@ public class NoteController {
     }
     @PutMapping
     public Object update(Note note){
-       noteService.updateNote(note);
-       return  note;
+        noteService.updateNote(note);
+        return  note;
+    }
+    @PutMapping("/move")
+    public void moveNote(Note note){
+        noteService.moveNote(note);
+
     }
 }

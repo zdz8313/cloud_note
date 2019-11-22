@@ -6,14 +6,14 @@ function getNormalNoteList(){
     var nb =li.data('notebook');
     var notebookId =nb.id;
     $.ajax({
-		url:"/note.do",
-		method:"get",
-		data:{notebookId:notebookId},
-		success:function (data) {
+        url:"/note.do",
+        method:"get",
+        data:{notebookId:notebookId},
+        success:function (data) {
             $('#second_side_right .contacts-list').html("");
-			for(var i =0; i<data.length;i++){
-				var note =data[i];
-				$('#second_side_right .contacts-list').append('<li class="online">\n' +
+            for(var i =0; i<data.length;i++){
+                var note =data[i];
+                $('#second_side_right .contacts-list').append('<li class="online">\n' +
                     '<a > \n' +
                     '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title + note.modifyTime +'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
                     '</a>\n' +
@@ -28,9 +28,9 @@ function getNormalNoteList(){
                 $('#second_side_right .contacts-list li:last').data("note",note);
                 //选中第一个
                 $('#second_side_right .contacts-list li:first').click();
-			}
+            }
         }
-	});
+    });
 
 }
 
@@ -103,18 +103,56 @@ function updateNormalNote(){
   })
 }
 
+
 /***
  * 删除普通笔记
  */
 function deleteNormalNote(){
-	alert("删除普通笔记");
+    var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId = note.id;
+    //回收站id
+    var notebookId =    $('#rollback_button').data("notebook").id;
+    $.ajax({
+        url:"note/move.do",
+        method:"put",
+        data:{id:noteId,notebookId:notebookId},
+        success:function (data) {
+            if (data=='fail'){
+                Location.href="login.html";
+                return;
+            }
+            $('#second_side_right .contacts-list li .checked').parent().remove();
+            //删除完成时关闭弹窗
+            $('.cancle').click();
+            $('#second_side_right .contacts-list li:first').click();
+        }
+    });
 }
 
 /***
  * 移动笔记
  */
+
 function moveNote(){
-	alert("移动笔记");
+    var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId = note.id;
+        var notebookId =$('#moveSelect').val();
+    $.ajax({
+        url:"note/move.do",
+        method:"put",
+        data:{id:noteId,notebookId:notebookId},
+        success:function (data) {
+            if (data=='fail'){
+                Location.href="login.html";
+                return;
+            }
+            $('#second_side_right .contacts-list li .checked').parent().remove();
+            $('.cancle').click();
+            //选中第一个
+            $('#second_side_right .contacts-list li:first').click();
+        }
+    })
+
 }
 
 /***
