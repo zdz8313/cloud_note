@@ -17,8 +17,12 @@ public class NoteController {
     }
     @PostMapping
     public Object addNote(Note note){
-        System.out.println("1111111111111111");
         noteService.addNote(note);
         return  note;
+    }
+    @PutMapping
+    public Object update(Note note){
+       noteService.updateNote(note);
+       return  note;
     }
 }

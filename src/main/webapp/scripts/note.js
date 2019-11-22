@@ -38,6 +38,10 @@ function getNormalNoteList(){
  * 查询普通笔记内容
  */
 function getNoteDetail(){
+  var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
+  $('#input_note_title').val(note.title);
+  um.setContent(note.body == null ? "" : note.body);
+
 	console.log("查询普通笔记内容");
 }
 /***
@@ -80,9 +84,23 @@ function createNormalNote(){
  * 更新普通笔记
  */
 function updateNormalNote(){
+    var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
+    var noteId = note.id;
+   var title =  $('#input_note_title').val().trim();
 	var body = um.getContent();
-	alert(body);
-	alert("更新普通笔记");
+  $.ajax({
+	  url:"note.do",
+	  method:"put",
+	  data:{id:noteId,title:title,body:body},
+	  success:function (data) {
+	  	alert("修改成功");
+		  note.modifyTime =data.modifyTime;
+		  note.title =title;
+		  note.body=body;
+          $('#second_side_right .contacts-list li .checked').parent().data('note',note);
+          $('#second_side_right .contacts-list li .checked').html('<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title + note.modifyTime +'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n');
+      }
+  })
 }
 
 /***
