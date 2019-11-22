@@ -10,10 +10,7 @@
     <filter-name>putFilter</filter-name>
     <filter-class>org.springframework.web.filter.FormContentFilter</filter-class>
   </filter>
-  <filter-mapping>
-    <filter-name>putFilter</filter-name>
-    <url-pattern>*.do</url-pattern>
-  </filter-mapping>
+
   <filter>
     <filter-name>encode</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -22,6 +19,10 @@
       <param-value>utf-8</param-value>
     </init-param>
   </filter>
+  <filter-mapping>
+    <filter-name>putFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
   <filter-mapping>
     <filter-name>encode</filter-name>
     <url-pattern>*.do</url-pattern>
@@ -39,6 +40,6 @@
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>/login.html</welcome-file>
+    <welcome-file>/edit.html</welcome-file>
   </welcome-file-list>
 </web-app>

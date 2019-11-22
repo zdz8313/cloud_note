@@ -43,6 +43,7 @@ function loadNoteBook(){
                     '</li>');
                 $('#first_side_right .contacts-list li:last').data("notebook", nb);
 			}
+            $('#first_side_right .contacts-list li:first').click();
         }
     });
 }
@@ -75,7 +76,7 @@ $.ajax({
             $('.cancle').click();
             //新添加的节点放置在普通笔记本的第一位
             $('#first_side_right .contacts-list li:first').after('<li class="online">\n' +
-                '<a class=\'unchecked\'>\n' +
+                '<a class=\'unchecked\'> \n' +
                 '<i class="fa fa-book" title="笔记本" rel="tooltip-bottom"></i>' +
                 nb.name+
                 '<button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button>\n' +
