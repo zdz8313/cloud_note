@@ -30,4 +30,11 @@ public class NoteController {
         noteService.moveNote(note);
 
     }
+
+    @DeleteMapping
+    public  void  deleteNote(String id){
+       noteService.deleteNote(id);
+    }
+
+
 }

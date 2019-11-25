@@ -1,3 +1,26 @@
+/**
+ * 时间格式
+ */
+
+function dateFtt(date,fmt)
+{ //author: meizz
+    var o = {
+        "M+" : date.getMonth()+1,                 //月份
+        "d+" : date.getDate(),                    //日
+        "h+" : date.getHours(),                   //小时
+        "m+" : date.getMinutes(),                 //分
+        "s+" : date.getSeconds(),                 //秒
+        "q+" : Math.floor((date.getMonth()+3)/3), //季度
+        "S"  : date.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt))
+        fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)
+        if(new RegExp("("+ k +")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    return fmt;
+}
+
 /***
  * 加载普通笔记
  */
@@ -13,9 +36,10 @@ function getNormalNoteList(){
             $('#second_side_right .contacts-list').html("");
             for(var i =0; i<data.length;i++){
                 var note =data[i];
+
                 $('#second_side_right .contacts-list').append('<li class="online">\n' +
                     '<a > \n' +
-                    '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title + note.modifyTime +'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
+                    '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title +'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+dateFtt(new Date( note.modifyTime),"yyyy-MM-dd hh:mm:ss")+')</span>'+'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
                     '</a>\n' +
                     '<div class="note_menu" tabindex=\'-1\'>\n' +
                     '<dl>\n' +
@@ -41,8 +65,6 @@ function getNoteDetail(){
   var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
   $('#input_note_title').val(note.title);
   um.setContent(note.body == null ? "" : note.body);
-
-	console.log("查询普通笔记内容");
 }
 /***
  * 创建普通笔记
@@ -62,7 +84,7 @@ function createNormalNote(){
 			//新建笔记
             $('#second_side_right .contacts-list').prepend('<li class="online">\n' +
                 '<a > \n' +
-                '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title + note.modifyTime +'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
+                '<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title +'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+dateFtt(new Date( note.modifyTime),"yyyy-MM-dd hh:mm:ss")+')</span>'+'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n' +
                 '</a>\n' +
                 '<div class="note_menu" tabindex=\'-1\'>\n' +
                 '<dl>\n' +
@@ -98,7 +120,7 @@ function updateNormalNote(){
 		  note.title =title;
 		  note.body=body;
           $('#second_side_right .contacts-list li .checked').parent().data('note',note);
-          $('#second_side_right .contacts-list li .checked').html('<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title + note.modifyTime +'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n');
+          $('#second_side_right .contacts-list li .checked').html('<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title +'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+dateFtt(new Date( note.modifyTime),"yyyy-MM-dd hh:mm:ss")+')</span>'+'<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>\n');
       }
   })
 }
@@ -133,10 +155,8 @@ function deleteNormalNote(){
  * 移动笔记
  */
 
-function moveNote(){
-    var note=	$('#second_side_right .contacts-list li .checked').parent().data('note');
-    var noteId = note.id;
-        var notebookId =$('#moveSelect').val();
+function moveNote(li,notebookId){
+  var noteId =li.data('note').id;
     $.ajax({
         url:"note/move.do",
         method:"put",
@@ -146,10 +166,11 @@ function moveNote(){
                 Location.href="login.html";
                 return;
             }
-            $('#second_side_right .contacts-list li .checked').parent().remove();
+            var parent =li.parent();
+            li.remove();
             $('.cancle').click();
             //选中第一个
-            $('#second_side_right .contacts-list li:first').click();
+            parent.children('li:first').click();
         }
     })
 
@@ -169,21 +190,56 @@ function createShareNote(){
  * 查询回收站笔记列表
  */
 function getRecycleNoteList(){
-	alert("查询回收站笔记列表");
+  var nb =  $('#rollback_button').data("notebook");
+    var notebookId =nb.id;
+    $.ajax({
+        url:"/note.do",
+        method:"get",
+        data:{notebookId:notebookId},
+        success:function (data) {
+            $('#four_side_right .contacts-list').html("");
+            for(var i =0; i<data.length;i++){
+                var note =data[i];
+                $('#four_side_right .contacts-list').append('<li class="disable"><a ><i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> '+note.title +'&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">('+dateFtt(new Date( note.modifyTime),"yyyy-MM-dd hh:mm:ss")+')</span>'+' <button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button><button type="button" class="btn btn-default btn-xs btn_position_2 btn_replay"><i class="fa fa-reply"></i></button></a></li>');
+                $('#four_side_right .contacts-list li:last').data("note",note);
+                //选中第一个
+                $('#four_side_right .contacts-list li:first').click();
+            }
+        }
+    });
 }
 
 /***
  * 查看回收站笔记内容
  */
 function getRecycleNoteDetail() {
-	console.log("查看回收站笔记内容");
+     var note =   $('#four_side_right .contacts-list li .checked').parent().data('note');
+     $('#noput_note_title').html(note.title);
+     $('#note_body').html(note.body);
 }
 
 /***
  * 删除回收站笔记
  */
 function deleteRecycleNote(){
-	alert("删除回收站笔记");
+    var li =   $('#four_side_right .contacts-list li .checked').parent();
+    var noteId =li.data('note').id;
+    $.ajax({
+        url:"/note.do",
+        method:"delete",
+        data:{id:noteId},
+        success:function (data) {
+            if (data=='fail'){
+                Location.href="login.html";
+                return;
+            }
+            li.remove();
+            //模拟点击
+            $('#four_side_right .contacts-list li:first').click();
+            $('.cancle').click();
+        }
+
+    })
 }
 
 /***
