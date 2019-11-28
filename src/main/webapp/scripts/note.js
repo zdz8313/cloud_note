@@ -150,6 +150,7 @@ function deleteNormalNote(){
             //删除完成时关闭弹窗
             $('.cancle').click();
             $('#second_side_right .contacts-list li:first').click();
+            get
         }
     });
 }
